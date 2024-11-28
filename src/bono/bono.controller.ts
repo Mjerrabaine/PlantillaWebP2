@@ -12,45 +12,21 @@ export class BonoController {
 
   @Get()
   async findAllBonosByUsuario() {
-    return await this.propuestaService.findAll();
+    return await this.bonoService.findAll();
   }
 
   @Get()
   async findBonoByCodigo() {
-    return await this.propuestaService.findAll();
+    return await this.bonoService.findAll();
   }
 
   @Post()
   async crearBono() {
-    return await this.propuestaService.findAll();
+    return await this.bonoService.findAll();
   }
 
   @Put()
   async deleteBono() {
-    return await this.propuestaService.findAll();
+    return await this.bonoService.findAll();
   }
-/*
-  @Get(':museumId')
-  async findOne(@Param('museumId') museumId: string) {
-    return await this.museumService.findOne(museumId);
-  }
-
-  @Post()
-  async create(@Body() museumDto: MuseumDto) {
-    const museum: MuseumEntity = plainToInstance(MuseumEntity, museumDto);
-    return await this.museumService.create(museum);
-  }
-
-  @Put(':museumId')
-  async update(@Param('museumId') museumId: string, @Body() museumDto: MuseumDto) {
-    const museum: MuseumEntity = plainToInstance(MuseumEntity, museumDto);
-    return await this.museumService.update(museumId, museum);
-  }
-
-  @Delete(':museumId')
-  @HttpCode(204)
-  async delete(@Param('museumId') museumId: string) {
-    return await this.museumService.delete(museumId);
-  }
-    */
 }
