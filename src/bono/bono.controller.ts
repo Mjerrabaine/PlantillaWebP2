@@ -5,28 +5,30 @@ import { BonoDto } from './bono.dto/bono.dto';
 import { BonoEntity } from './bono.entity/bono.entity';
 import { BonoService } from './bono.service';
 
-@Controller('bono')
+@Controller('bonos')
 @UseInterceptors(BusinessErrorsInterceptor)
 export class BonoController {
     constructor(private readonly bonoService: BonoService) {}
-
-  @Get()
-  async findAllBonosByUsuario() {
-    return await this.bonoService.findAll();
-  }
-
-  @Get()
-  async findBonoByCodigo() {
-    return await this.bonoService.findAll();
-  }
-
-  @Post()
-  async crearBono() {
-    return await this.bonoService.findAll();
-  }
-
-  @Put()
-  async deleteBono() {
-    return await this.bonoService.findAll();
-  }
+    
+    @Get(':userId/usuario')
+    async findAllByUsuario(@Param('userId') userId: number) {
+      return await this.bonoService.findAllBonosByUsuario(userId);
+    }
+  
+    @Get(':codigo/codigo')
+    async findByCodigo(@Param('codigo') codigo: string) {
+      return await this.bonoService.findBonoByCodigo(codigo);
+    }
+  
+    @Post()
+    async create(@Body() bonoDto: BonoDto) {
+      const bono: BonoEntity = plainToInstance(BonoEntity, bonoDto);
+      return await this.bonoService.crearBono(bono);
+    }
+  
+    @Delete(':bonoId')
+    @HttpCode(204)
+    async delete(@Param('bonoId') bonoId: number) {
+      return await this.bonoService.deleteBono(bonoId);
+    }
 }

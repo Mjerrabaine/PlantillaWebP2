@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BusinessError, BusinessLogicException } from '../shared/errors/business-errors';
+import { BusinessError, BusinessLogicException } from './../shared/errors/business-errors';
 import { Repository } from 'typeorm';
 import { UsuarioEntity } from './usuario.entity/usuario.entity';
 
@@ -23,13 +23,13 @@ export class UsuarioService
   
    async crearUsuario(usuario: UsuarioEntity ): Promise<UsuarioEntity> {
         const validGroups = ["TICSW", "IMAGINE", "COMIT"];
-        const numeroString = new String(usuario.numeroExtension);
+        const numeroString = usuario.numeroExtension.toString();
         if (!validGroups.includes(usuario.grupoInvestigacion) && usuario.rol==='Profesor') {
-            throw new BusinessLogicException("The user profesor does nto belong to a valid grupo de Investigacion", BusinessError.BAD_REQUEST);
+            throw new BusinessLogicException("The user with the role Profesor must belong to a valid grupo de investigacion (TICSW, IMAGINE, COMIT)", BusinessError.BAD_REQUEST);
 
         }
-        else if (numeroString.length===8 && usuario.rol==='Decana') {
-            throw new BusinessLogicException("The user profesor does nto belong to a valid grupo de Investigacion", BusinessError.BAD_REQUEST);
+        else if (numeroString.length!==8 && usuario.rol==='Decana') {
+            throw new BusinessLogicException("The user with the role Decana must have an 8-digit extension number", BusinessError.BAD_REQUEST);
 
         }
         const newUsuario = this.usuarioRepository.create(usuario);
@@ -42,11 +42,11 @@ export class UsuarioService
         if (!usuario)
             throw new BusinessLogicException("The usuario with the given id was not found", BusinessError.NOT_FOUND);
 
-        if (usuario.bonos)
-            throw new BusinessLogicException("The usuario with the given id has bonos and can not be deleted", BusinessError.BAD_REQUEST);
+        if (usuario.bonos.length>0||usuario.rol==='Decana')
+            throw new BusinessLogicException("The usuario with the given id has bonos or has user rol Decana and can not be deleted", BusinessError.BAD_REQUEST);
 
-        if (usuario.rol==='Decana')
-          throw new BusinessLogicException("The profesor with the given id is Decana and can not be deleted", BusinessError.NOT_FOUND);
+        //if (usuario.rol==='Decana') 
+        //  throw new BusinessLogicException("The profesor with the given id is Decana and can not be deleted", BusinessError.NOT_FOUND);
      
         await this.usuarioRepository.remove(usuario);
     }

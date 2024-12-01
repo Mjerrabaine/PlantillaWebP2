@@ -22,7 +22,11 @@ export class BonoService
    ){}
 
    async findAllBonosByUsuario(userId:number): Promise<BonoEntity[]> {
-    return await this.bonoRepository.find({where: { usuario: { id: userId } }, relations: ['propuesta'] });
+    const usuario = await this.usuarioRepository.findOne({where:  { id: userId } , relations: ['bonos','clases'] } );
+    if (!usuario)
+        throw new BusinessLogicException("The usuario with the given id de clase was not found", BusinessError.NOT_FOUND);
+
+       return usuario.bonos;
     }
 
    async findBonoByCodigo(codigoClase: string): Promise<BonoEntity> {
@@ -34,16 +38,31 @@ export class BonoService
    }
   
    async crearBono(bono: BonoEntity ): Promise<BonoEntity> {
-        if (!bono.monto && bono.monto<0) {
-            throw new BusinessLogicException("The bono has a nonexistent monto or is negative", BusinessError.BAD_REQUEST);
+        console.log('Received Bono:', bono);
+
+        if (bono.monto === undefined || bono.monto === null || bono.monto<0) {
+            throw new BusinessLogicException("The bono must have a positive monto that is not empty", BusinessError.BAD_REQUEST);
 
         }
-        const isProfesor= await this.userProfesor(bono.id);
-
-        if (!isProfesor)
-            throw new BusinessLogicException("The bono belongs to a profesor user and can not be deleted", BusinessError.NOT_FOUND);
+        const usuario = await this.usuarioRepository.findOne({
+            where: { id: bono.usuario.id },
+        });
        
+        if (!usuario) {
+            throw new BusinessLogicException(
+                'The usuario associated with the bono was not found',
+                BusinessError.NOT_FOUND,
+            );
+        }
+    
+        if (usuario.rol !== 'Profesor') {
+            throw new BusinessLogicException(
+                'The bono must be associated with a usuario that has the role of Profesor',
+                BusinessError.BAD_REQUEST,
+            );
+        }
 
+        console.log('Creating Bono...');
         const newBono = this.bonoRepository.create(bono);
         return await this.bonoRepository.save(newBono);
     }
@@ -51,18 +70,10 @@ export class BonoService
     async deleteBono(id: number) {
         const bono = await this.bonoRepository.findOne({where: {id}, relations: ['clase','usuario'] } );
 
-        if (!(bono.calificacion>4))
+        if (bono.calificacion>4)
             throw new BusinessLogicException("The bono can not be deleted it has a grade above 4", BusinessError.BAD_REQUEST);
 
         await this.bonoRepository.remove(bono);
     }
 
-    private async userProfesor(bonoId: number): Promise<boolean> {
-        const usuario  = await this.usuarioRepository.find({
-          where: { bonos: { id: bonoId } },
-          relations: ['bonos','clases'], 
-        });
-        
-        return usuario;
-      }
 }

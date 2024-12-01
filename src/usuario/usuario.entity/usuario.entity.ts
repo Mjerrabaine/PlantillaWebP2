@@ -2,6 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn ,OneToMany} from 'typeorm';
 import { BonoEntity } from "../../bono/bono.entity/bono.entity";
 import { ClaseEntity } from "../../clase/clase.entity/clase.entity";
 
+
 @Entity()
 export class UsuarioEntity {
  @PrimaryGeneratedColumn('increment')
@@ -10,8 +11,10 @@ export class UsuarioEntity {
  @Column({ type: 'varchar', length: 100 })
  nombre: string;
 
- @Column({ type: 'varchar'})
- rol: string;
+ @Column({
+  type: 'text', 
+  })
+  rol: 'Profesor' | 'Decana'; 
 
  @Column({ type: 'varchar', length: 100 })
  grupoInvestigacion: string;
@@ -22,8 +25,8 @@ export class UsuarioEntity {
  @Column({ type: 'int'})
  numeroExtension: number;
 
- @Column()
- jefe: UsuarioEntity;
+ //@Column()
+ //jefe: UsuarioEntity;
 
  @OneToMany(() => ClaseEntity, clase => clase.usuario)
  clases: ClaseEntity[];

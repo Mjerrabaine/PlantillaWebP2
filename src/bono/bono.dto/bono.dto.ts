@@ -13,4 +13,9 @@ export class BonoDto {
  @IsNotEmpty()
  readonly calificacion: number;
 
+ @IsNotEmpty()
+ readonly usuario: { id: number };
+
+ @IsNotEmpty()
+ readonly clase: { id: number };
 }

@@ -23,7 +23,7 @@ export class ClaseService
   
    async crearClase(clase: ClaseEntity ): Promise<ClaseEntity> {
 
-        if (clase.codigo.length===10) {
+        if (clase.codigo.length!==10) {
             throw new BusinessLogicException("The code of the class needs to have 10 characters", BusinessError.BAD_REQUEST);
 
         }

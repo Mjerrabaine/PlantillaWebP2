@@ -10,7 +10,7 @@ export class BonoEntity {
  @Column({ type: 'varchar', length: 100 })
  palabraClave: string;
  
- @Column({ type: 'double'})
+ @Column({ type: 'double precision'})
  calificacion: number;
 
  @Column({ type: 'int'})

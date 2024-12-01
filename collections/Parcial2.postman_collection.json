@@ -1,0 +1,220 @@
+{
+	"info": {
+		"_postman_id": "faf9d634-5351-4f0a-9707-ebfa95a3f9e2",
+		"name": "Parcial2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "38515578"
+	},
+	"item": [
+		{
+			"name": "findUsuarioById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/api/v1/usuarios/1"
+			},
+			"response": []
+		},
+		{
+			"name": "findAllBonosByUsuario",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/api/v1/bonos/3/usuario"
+			},
+			"response": []
+		},
+		{
+			"name": "findBonoByCodigo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/api/v1/bonos/PHY1010001/codigo"
+			},
+			"response": []
+		},
+		{
+			"name": "findBonoByCodigoWrong",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/bonos/999/codigo"
+			},
+			"response": []
+		},
+		{
+			"name": "findAllBonosByUsuarioWrong",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 1,\r\n  \"monto\": 1000,\r\n  \"calificacion\": 5,\r\n  \"palabraClave\": \"Research\",\r\n  \"usuario\": {\r\n    \"id\": 1,\r\n    \"nombre\": \"John Doe\"\r\n  },\r\n  \"clase\": {\r\n    \"id\": 1,\r\n    \"nombre\": \"Math 101\"\r\n  }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/bonos/999/usuario"
+			},
+			"response": []
+		},
+		{
+			"name": "findUsuarioByIdWrong",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/api/v1/usuarios/999"
+			},
+			"response": []
+		},
+		{
+			"name": "crearUsuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Jane Smith\",\r\n    \"rol\": \"Profesor\",\r\n    \"grupoInvestigacion\": \"COMIT\",\r\n    \"cedula\": 23456789,\r\n    \"numeroExtension\": 12345678\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/v1/usuarios"
+			},
+			"response": []
+		},
+		{
+			"name": "crearBono",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"palabraClave\": \"Innovation\",\r\n  \"monto\": 2000,\r\n  \"calificacion\": 4,\r\n  \"usuario\": { \"id\": 1 },\r\n  \"clase\": { \"id\": 1 }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/v1/bonos"
+			},
+			"response": []
+		},
+		{
+			"name": "crearBonoWrong",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"monto\": -2000,\r\n  \"calificacion\": 4,\r\n  \"palabraClave\": \"Innovation\",\r\n  \"usuario\": { \"id\": 1 },\r\n  \"clase\": { \"id\": 1 }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/bonos/1"
+			},
+			"response": []
+		},
+		{
+			"name": "crearUsuarioWrong",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"\",\r\n  \"rol\": \"Profesor\",\r\n  \"grupoInvestigacion\": \"INVALID_GROUP\",\r\n  \"cedula\": 23456789,\r\n  \"numeroExtension\": 12345678\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/usuarios"
+			},
+			"response": []
+		},
+		{
+			"name": "crearClase",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Physics 101\",\r\n  \"codigo\": \"PHY1010001\",\r\n  \"numCreditos\": 3,\r\n  \"usuario\": { \"id\": 7 }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/v1/clases"
+			},
+			"response": []
+		},
+		{
+			"name": "crearClaseWrong",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Physics 101\",\r\n  \"codigo\": \"INVALID_CODE\",\r\n  \"usuario\": { \"id\": 1 }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/clases"
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteBono",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:3000/api/v1/bonos/1"
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteUsuario",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/v1/usuarios/1"
+			},
+			"response": []
+		},
+		{
+			"name": "findClaseById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/api/v1/clases/9"
+			},
+			"response": []
+		}
+	]
+}
